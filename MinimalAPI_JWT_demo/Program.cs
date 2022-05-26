@@ -3,11 +3,15 @@ using MinimalAPI_JWT_demo.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSwaggerGen();
+
 builder.Services.AddEndpointsApiExplorer(); //supports minimal api
 builder.Services.AddSingleton<IMovieService, MovieService>(); // DI implementation
 builder.Services.AddSingleton<IUserService, UserService>();
 
 var app = builder.Build();
+
+app.UseSwagger();
 
 app.MapGet("/", () => "Hello World!");
 
@@ -50,5 +54,7 @@ IResult Delete(int id, IMovieService service)
     var result = service.Delete(id);
     return result ? Results.Ok(result) : Results.BadRequest("Something went wrong");
 }
+
+app.UseSwaggerUI();
 
 app.Run();
