@@ -17,14 +17,14 @@ namespace MinimalAPI_JWT_demo.Services
         {
             var movie = MovieRepository.Movies.FirstOrDefault(x => x.Id == id);
 
-            if(movie != null)
+            if (movie != null)
             {
                 MovieRepository.Movies.Remove(movie);
                 return true;
             }
             else
                 return false;
-    
+
         }
 
         public Movie Get(int id)
@@ -54,6 +54,7 @@ namespace MinimalAPI_JWT_demo.Services
                 return newMovie;
             }
             else
-                return null;   
+                return null;
+        }
     }
 }
