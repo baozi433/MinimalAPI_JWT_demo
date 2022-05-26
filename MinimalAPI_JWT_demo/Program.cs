@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using MinimalAPI_JWT_demo.Models;
 using MinimalAPI_JWT_demo.Services;
@@ -21,9 +22,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-
     };
 });
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddEndpointsApiExplorer(); //supports minimal api
 builder.Services.AddSingleton<IMovieService, MovieService>(); // DI implementation
@@ -39,15 +41,23 @@ app.MapGet("/", () => "Hello World!");
 
 app.MapPost("/login", (UserLogin user, IUserService service) => Login(user, service));
 
-app.MapPost("/create", (Movie movie, IMovieService service) => Create(movie, service));
+app.MapPost("/create",
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+(Movie movie, IMovieService service) => Create(movie, service));
 
-app.MapGet("/get", (int id, IMovieService service) => Get(id, service));
+app.MapGet("/get",
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Standard, Administrator")]
+(int id, IMovieService service) => Get(id, service));
 
 app.MapGet("/list", (IMovieService service) => List(service));
 
-app.MapPut("/update", (Movie newMovie, IMovieService service) => Update(newMovie, service));
+app.MapPut("/update",
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+(Movie newMovie, IMovieService service) => Update(newMovie, service));
 
-app.MapDelete("/delete", (int id, IMovieService service) => Delete(id, service));
+app.MapDelete("/delete",
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")] 
+(int id, IMovieService service) => Delete(id, service));
 
 IResult Login(UserLogin user, IUserService service)
 {

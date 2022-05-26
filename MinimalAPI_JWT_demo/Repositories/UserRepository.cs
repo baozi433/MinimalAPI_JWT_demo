@@ -7,9 +7,9 @@ namespace MinimalAPI_JWT_demo.Repositories
         public static List<User> Users = new()
         {
             new() {UserName = "yuanjie_admin", EmailAddress = "yuanjie.admin@email.com", Password = "Easy_passw0rd",
-                   FirstName = "Yuanjie", LastName = "Wu", Role = "admin" },
+                   FirstName = "Yuanjie", LastName = "Wu", Role = "Administrator" },
             new() {UserName = "lindsay_standard", EmailAddress = "lindsay.standard@email.com", Password = "Easy_passw0rd",
-                   FirstName = "Lindsay", LastName = "Xue", Role = "standard" },
+                   FirstName = "Lindsay", LastName = "Xue", Role = "Standard" },
         };
     }
 }
