@@ -1,4 +1,5 @@
 # MinimalAPI_JWT_demo
+Minimal API, JWT Authentication and Authorization
 
 This is the demo for .NET 6 Web API (Minimal API) that enforce JWT Authentication and Authorization. Swagger support and configure Bearer Authentication are enabled, so that all of the endpoints can be testable from Swagger UI using a bearer token.
 
